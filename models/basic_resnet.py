@@ -159,14 +159,15 @@ class Model(model.Model):
             if FLAGS.special_first:
                 logger.warn(
                     "post-activation residual unit is used, special_first is invalid.")
+                FLAGS.special_first = False
         elif FLAGS.unit_type == 1:
             unit_conv = self.conv_pre
         else:
             raise ValueError("wrong residual unit type:{}".format(
                 FLAGS.unit_type))
 
+        is_first = True if group_i == unit_i == 0 else False
         if FLAGS.residual_type == 0:
-            is_first = True if group_i == unit_i == 0 else False
             # 1x1 convolution responsible for reducing dimension
             net_residual = unit_conv(name + '/conv_reduce', net_residual,
                                      group.num_ker, FLAGS.bott_size_ends,
@@ -182,17 +183,15 @@ class Model(model.Model):
         elif FLAGS.residual_type == 1:
             net_residual = unit_conv(name + '/conv_one', net_residual,
                                      group.num_ker, FLAGS.bott_size_mid,
-                                     stride1, False)
+                                     stride1, is_first)
             # # if self.if_drop and group_i == 2:
             # if self.if_drop and unit_i == 0:
             #     with tf.name_scope("dropout"):
             #         net_residual = tf.nn.dropout(net_residual,
             #                                      self.dropout_keep_prob)
-            net_residual = unit_conv(name + '/conv_two',
-                                     net_residual,
-                                     group.num_ker,
-                                     FLAGS.bott_size_mid,
-                                     1, )
+            net_residual = unit_conv(name + '/conv_two', net_residual,
+                                     group.num_ker, FLAGS.bott_size_mid, 1,
+                                     False)
         else:
             raise ValueError("residual_type error")
 
@@ -216,7 +215,8 @@ class Model(model.Model):
             with tf.variable_scope(name + '_sc'):
                 # projection
                 net = self.BN_ReLU(net)
-                net = self.conv2d(net, group.num_key_exp, 1, stride1)
+                num_key = group.num_ker if FLAGS.residual_type == 1 else group.num_key_exp
+                net = self.conv2d(net, num_key, 1, stride1)
 
         ### element-wise addition
         net = net + net_residual
