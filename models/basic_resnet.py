@@ -9,7 +9,7 @@ from tensorflow.contrib.layers import l2_regularizer
 from tensorflow.contrib.layers.python.layers import utils
 
 from models import model
-# from utils import logger
+from utils import logger
 from utils import FLAGS
 
 FLAGS.add('--special_first',
@@ -157,7 +157,8 @@ class Model(model.Model):
         if FLAGS.unit_type == 0:
             unit_conv = self.conv_post
             if FLAGS.special_first:
-                logger.warn("post-activation residual unit is used, special_first is invalid.")
+                logger.warn(
+                    "post-activation residual unit is used, special_first is invalid.")
         elif FLAGS.unit_type == 1:
             unit_conv = self.conv_pre
         else:
@@ -221,7 +222,6 @@ class Model(model.Model):
         net = net + net_residual
 
         return net
-
 
     def resnn(self, image_batch):
         raise NotImplementedError("Should have implemented this")
