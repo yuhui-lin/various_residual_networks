@@ -154,8 +154,10 @@ class Model(model.Model):
 
         ### residual function
         net_residual = net
-        if FLAGS.unit_type == 0 and not FLAGS.special_first:
+        if FLAGS.unit_type == 0:
             unit_conv = self.conv_post
+            if FLAGS.special_first:
+                logger.warn("post-activation residual unit is used, special_first is invalid.")
         elif FLAGS.unit_type == 1:
             unit_conv = self.conv_pre
         else:
