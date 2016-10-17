@@ -48,7 +48,7 @@ class Model(basic_resnet.Model):
             # transitional layers
             # not the last group/block
             if group_i < len(self.groups) - 1:
-                stride = 2 if self.groups[group_i].is_downsample else 1
+                stride = 2 if group.is_downsample else 1
                 net_shape = net.get_shape().as_list()
                 net = self.BN_ReLU(net)
                 net = self.conv2d(net, net_shape[3], 1, 1)

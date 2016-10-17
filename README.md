@@ -55,7 +55,7 @@ Bottleneck design
 ```bash
 python -m train --data_dir ~/work/vrn/data/ --outputs_dir ~/work/vrn/outputs/ --dataset cifar-10 --model resnet
 python -m train --data_dir ~/work/vrn/data/ --outputs_dir ~/work/vrn/outputs/ --dataset cifar-10 --model ror
-python -m train --data_dir ~/work/vrn/data/ --outputs_dir ~/work/vrn/outputs/ --dataset cifar-10 --model resnet --print_step 3 --summary_step 40 --checkpoint_step 300
+python -m train --data_dir ~/work/vrn/data/ --outputs_dir ~/work/vrn/outputs/ --dataset cifar-10 --model resnet --print_step 3 --summary_step 40 --eval_step 3
 python -m train --dataset cifar-10 --model resnet --print_step 3 --summary_step 40 --eval_step 400
 ```
 

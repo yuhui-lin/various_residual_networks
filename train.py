@@ -259,7 +259,7 @@ def main(argv=None):
 
     # pring something before end
     logger.newline(2)
-    logger.info("total time used: " + time.time() - main_time)
+    logger.info("total time used: {}".format(time.time() - main_time))
     logger.info("summary dir: " + RESULT_DIR)
     logger.newline()
     logger.info("~end of main~")

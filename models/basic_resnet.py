@@ -14,7 +14,7 @@ from utils import FLAGS
 
 FLAGS.add('--special_first',
           type=bool,
-          default=True,
+          default=False,
           help='special first residual unit from P14 of '
           '(arxiv.org/abs/1603.05027')
 FLAGS.add('--shortcut',
